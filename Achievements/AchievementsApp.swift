@@ -9,9 +9,19 @@ import SwiftUI
 
 @main
 struct AchievementsApp: App {
-    var body: some Scene {
-        WindowGroup {
-            ContentView()
-        }
-    }
+	@StateObject private var achievementManager: AchievementManager = AchievementManager()
+	
+	var body: some Scene {
+		WindowGroup {
+			RootPage()
+				.onAppear {
+					do {
+						try achievementManager.syncAchievements()
+					} catch  {
+						print("Unable to sync achievements")
+					}
+				}
+				.environmentObject(achievementManager)
+		}
+	}
 }
