@@ -99,16 +99,46 @@ extension UIImage {
 	}
 }
 
-fileprivate enum PersonalRecords: String, CaseIterable {
+enum PersonalRecords: String, CaseIterable {
 	case fastest5k = "fastest_5k"
 	case fastest10k = "fastest_10k"
 	case fastestHalfMarathon = "fastest_half_marathon"
 	case fastestMarathon = "fastest_marathon"
 	case highestElevation = "highest_elevation"
 	case longestRun = "longest_run"
+	
+	var name: String {
+		switch self {
+		case .fastest5k:
+			return "Fastest 5k"
+		case .fastest10k:
+			return "Fastest 10k"
+		case .fastestHalfMarathon:
+			return "Fastest Half-Marathon"
+		case .fastestMarathon:
+			return "Fastest Marathon"
+		case .highestElevation:
+			return "Highest Elevation"
+		case .longestRun:
+			return "Longest Run"
+		}
+	}
+	
+	var unit: AchievementViewModel.AchievementUnit {
+		switch self {
+		case .fastest5k,
+			 .fastest10k,
+			 .fastestHalfMarathon,
+			 .fastestMarathon,
+			 .longestRun:
+			return .duration
+		case .highestElevation:
+			return .elevation
+		}
+	}
 }
 
-fileprivate enum VirtualRaces: String, CaseIterable {
+enum VirtualRaces: String, CaseIterable {
 	case hakoneEkiden = "hakone_ekiden"
 	case mizunoSingaporeEkiden = "mizuno_singapore_ekiden"
 	case tokyoHakoneEkiden2020 = "tokyo-hakone-ekiden-2020"
@@ -116,6 +146,29 @@ fileprivate enum VirtualRaces: String, CaseIterable {
 	case virtual10kRace = "virtual_10k_race"
 	case virtualHalfMarathonRace = "virtual_half_marathon_race"
 	case virtualMarathonRace = "virtual_marathon_race"
+	
+	var name: String {
+		switch self {
+		case .hakoneEkiden:
+			return "Hakone Ekiden"
+		case .mizunoSingaporeEkiden:
+			return "Mizuno-Singapore Ekiden"
+		case .tokyoHakoneEkiden2020:
+			return "Tokyo-Hakone Ekiden 2020"
+		case .virtual5kRace:
+			return "Virtual 5k Race"
+		case .virtual10kRace:
+			return "Virtual 10k Race"
+		case .virtualHalfMarathonRace:
+			return "Virtual Half-Marathon Race"
+		case .virtualMarathonRace:
+			return "Virtual Marathon Race"
+		}
+	}
+	
+	var unit: AchievementViewModel.AchievementUnit {
+		return .duration
+	}
 }
 
 fileprivate enum TabBarIcons: String, CaseIterable {

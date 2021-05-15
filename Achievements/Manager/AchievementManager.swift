@@ -35,7 +35,7 @@ class AchievementManager: ObservableObject {
 		}
 		
 		for race in VirtualRaces.allCases {
-			AchievementViewModel(
+			achievements[race.name] = AchievementViewModel(
 				title: race.name,
 				type: .race,
 				image: UIImage(named: race.rawValue)!,
