@@ -17,31 +17,41 @@ Its best to make an extension so all of your potential errors are isolated to on
 // Add the asset catalog images statically to SwiftUI's Image struct
 extension Image {
 	// Static properties for personal record images
-	static let fastest5k: Self = Image(PersonalRecords.fastest5k.rawValue)
-	static let fastest10k: Self = Image(PersonalRecords.fastest10k.rawValue)
-	static let fastestHalfMarathon: Self = Image(PersonalRecords.fastestHalfMarathon.rawValue)
-	static let fastestMarathon: Self = Image(PersonalRecords.fastestMarathon.rawValue)
-	static let highestElevation: Self = Image(PersonalRecords.highestElevation.rawValue)
-	static let longestRun: Self = Image(PersonalRecords.longestRun.rawValue)
+	static let fastest5k = Image(PersonalRecords.fastest5k.rawValue)
+	static let fastest10k = Image(PersonalRecords.fastest10k.rawValue)
+	static let fastestHalfMarathon = Image(PersonalRecords.fastestHalfMarathon.rawValue)
+	static let fastestMarathon = Image(PersonalRecords.fastestMarathon.rawValue)
+	static let highestElevation = Image(PersonalRecords.highestElevation.rawValue)
+	static let longestRun = Image(PersonalRecords.longestRun.rawValue)
 	
 	// Static properties for virtual race images
-	static let hakoneEkiden: Self = Image(VirtualRaces.hakoneEkiden.rawValue)
-	static let mizunoSingaporeEkiden: Self = Image(VirtualRaces.mizunoSingaporeEkiden.rawValue)
-	static let tokyoHakoneEkiden2020: Self = Image(VirtualRaces.tokyoHakoneEkiden2020.rawValue)
-	static let virtual5kRace: Self = Image(VirtualRaces.virtual5kRace.rawValue)
-	static let virtual10kRace: Self = Image(VirtualRaces.virtual10kRace.rawValue)
-	static let virtualHalfMarathonRace: Self = Image(VirtualRaces.virtualHalfMarathonRace.rawValue)
-	static let virtualMarathonRace: Self = Image(VirtualRaces.virtualMarathonRace.rawValue)
+	static let hakoneEkiden = Image(VirtualRaces.hakoneEkiden.rawValue)
+	static let mizunoSingaporeEkiden = Image(VirtualRaces.mizunoSingaporeEkiden.rawValue)
+	static let tokyoHakoneEkiden2020 = Image(VirtualRaces.tokyoHakoneEkiden2020.rawValue)
+	static let virtual5kRace = Image(VirtualRaces.virtual5kRace.rawValue)
+	static let virtual10kRace = Image(VirtualRaces.virtual10kRace.rawValue)
+	static let virtualHalfMarathonRace = Image(VirtualRaces.virtualHalfMarathonRace.rawValue)
+	static let virtualMarathonRace = Image(VirtualRaces.virtualMarathonRace.rawValue)
 	
-	static var personalRecords: [Self] {
+	// Static property for tab bar icons
+	static let awardBadge = Image(TabBarIcons.awardBadge.rawValue)
+	static let settings = Image(systemName: TabBarIcons.settings.rawValue)
+	
+	static var personalRecords: [Image] {
 		PersonalRecords.allCases.map { personalRecord in
 			Image(personalRecord.rawValue)
 		}
 	}
 	
-	static var virtualRaces: [Self] {
+	static var virtualRaces: [Image] {
 		VirtualRaces.allCases.map { virtualRace in
 			Image(virtualRace.rawValue)
+		}
+	}
+	
+	static var tabBarImages: [Image] {
+		TabBarIcons.allCases.map { tabBarIcon in
+			tabBarIcon.isSfSymbol ? Image(systemName: tabBarIcon.rawValue) : Image(tabBarIcon.rawValue)
 		}
 	}
 }
@@ -66,6 +76,10 @@ extension UIImage {
 	static let virtualHalfMarathonRace = UIImage(named: VirtualRaces.virtualHalfMarathonRace.rawValue)!
 	static let virtualMarathonRace = UIImage(named: VirtualRaces.virtualMarathonRace.rawValue)!
 	
+	// Static property for tab bar icons
+	static let awardBadge = UIImage(named: TabBarIcons.awardBadge.rawValue)!
+	static let settings = UIImage(systemName: TabBarIcons.settings.rawValue)!
+	
 	static var personalRecords: [UIImage] {
 		PersonalRecords.allCases.compactMap { personalRecord in
 			UIImage(named: personalRecord.rawValue)
@@ -75,6 +89,12 @@ extension UIImage {
 	static var virtualRaces: [UIImage] {
 		VirtualRaces.allCases.compactMap { virtualRace in
 			UIImage(named: virtualRace.rawValue)
+		}
+	}
+	
+	static var tabBarImages: [UIImage] {
+		TabBarIcons.allCases.compactMap { tabBarIcon in
+			tabBarIcon.isSfSymbol ? UIImage(systemName: tabBarIcon.rawValue) : UIImage(named: tabBarIcon.rawValue)
 		}
 	}
 }
@@ -96,4 +116,18 @@ fileprivate enum VirtualRaces: String, CaseIterable {
 	case virtual10kRace = "virtual_10k_race"
 	case virtualHalfMarathonRace = "virtual_half_marathon_race"
 	case virtualMarathonRace = "virtual_marathon_race"
+}
+
+fileprivate enum TabBarIcons: String, CaseIterable {
+	case awardBadge = "award_badge"
+	case settings = "gearshape"
+	
+	var isSfSymbol: Bool {
+		switch self {
+		case .awardBadge:
+			return false
+		case .settings:
+			return true
+		}
+	}
 }

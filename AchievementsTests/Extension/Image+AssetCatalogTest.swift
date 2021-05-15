@@ -14,6 +14,7 @@ class Image_AssetCatalogTest: XCTestCase {
 	func testAssetCatalogArrayCount() {
 		XCTAssertEqual(UIImage.personalRecords.count, 6)
 		XCTAssertEqual(UIImage.virtualRaces.count, 7)
+		XCTAssertEqual(UIImage.tabBarImages.count, 2)
 	}
 	
 	func testAssetCatalogForceUnwrap() {
@@ -30,7 +31,9 @@ class Image_AssetCatalogTest: XCTestCase {
 			UIImage.virtual5kRace,
 			UIImage.virtual10kRace,
 			UIImage.virtualHalfMarathonRace,
-			UIImage.virtualMarathonRace
+			UIImage.virtualMarathonRace,
+			UIImage.awardBadge,
+			UIImage.settings
 		]
 		
 		// If the test makes it to this point, its safe to assume none of the force unwraps failed.

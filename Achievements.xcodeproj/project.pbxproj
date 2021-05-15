@@ -78,11 +78,11 @@
 		84AA3AE22650174B00933ED5 /* Achievements */ = {
 			isa = PBXGroup;
 			children = (
-				84AA3AF226501B0200933ED5 /* Extension */,
 				84AA3AE32650174B00933ED5 /* AchievementsApp.swift */,
 				84AA3AE52650174B00933ED5 /* ContentView.swift */,
 				84AA3AE72650174C00933ED5 /* Assets.xcassets */,
 				84AA3AEC2650174C00933ED5 /* Info.plist */,
+				84AA3AF226501B0200933ED5 /* Extension */,
 				84AA3AE92650174C00933ED5 /* Preview Content */,
 			);
 			path = Achievements;
