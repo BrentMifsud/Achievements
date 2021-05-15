@@ -9,6 +9,11 @@ import Foundation
 import struct SwiftUI.Image
 import class UIKit.UIImage
 
+/*
+Manually typing the name of image assets is error prone, and subject to failures due to typos.
+Its best to make an extension so all of your potential errors are isolated to one spot.
+*/
+
 // Add the asset catalog images statically to SwiftUI's Image struct
 extension Image {
 	// Static properties for personal record images
