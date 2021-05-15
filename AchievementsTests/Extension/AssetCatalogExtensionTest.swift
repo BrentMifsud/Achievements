@@ -9,7 +9,7 @@
 import UIKit
 import XCTest
 
-class Image_AssetCatalogTest: XCTestCase {
+class AssetCatalogExtensionTest: XCTestCase {
 
 	func testAssetCatalogArrayCount() {
 		XCTAssertEqual(UIImage.personalRecords.count, 6)
@@ -37,6 +37,18 @@ class Image_AssetCatalogTest: XCTestCase {
 		]
 		
 		// If the test makes it to this point, its safe to assume none of the force unwraps failed.
+		XCTAssert(true)
+	}
+	
+	func testAssetCatalogColors() {
+		_ = [
+			UIColor.navBarColor,
+			UIColor.sectionCountColor,
+			UIColor.sectionHeaderColor,
+			UIColor.sectionTitleColor
+		]
+		
+		// If the test makes it this far, there is no problem loading colours.
 		XCTAssert(true)
 	}
 
