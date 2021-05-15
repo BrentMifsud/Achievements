@@ -11,7 +11,7 @@ struct AchievementPage: View {
 	var body: some View {
 		NavigationView {
 			Text("Achievement Page")
-				.navigationBarTitle(Text(LocalizedStringKey("Achievements"), comment: "Achievements Title"))
+				.navigationBarTitle(Text(LocalizedStringKey("Achievements"), comment: "Achievements Title"), displayMode: .inline)
 				.tabItem {
 					Image.awardBadge
 					Text(LocalizedStringKey("Achievements"), comment: "Achievements Tab")
