@@ -23,6 +23,30 @@ class AchievementManager: ObservableObject {
 		self.fileName = fileName
 	}
 	
+	private func fetchAchievements() throws {
+		for record in PersonalRecords.allCases {
+			achievements[record.name] = AchievementViewModel(
+				title: record.name,
+				type: .personal,
+				image: UIImage(named: record.rawValue)!,
+				unit: record.unit,
+				isComplete: false
+			)
+		}
+		
+		for race in VirtualRaces.allCases {
+			AchievementViewModel(
+				title: race.name,
+				type: .race,
+				image: UIImage(named: race.rawValue)!,
+				unit: race.unit,
+				isComplete: false
+			)
+		}
+		
+		try saveAchievements()
+	}
+	
 	/// Sync the achievement manager with the achivements saved to the device.
 	/// - Throws: File manager or decoding errors
 	func syncAchievements() throws {
@@ -30,8 +54,9 @@ class AchievementManager: ObservableObject {
 		
 		guard fileManager.fileExists(atPath: url.path) else {
 			#if DEBUG
-			print("AchievementManager -- No achievements file to read.")
+			print("AchievementManager -- No achievements file to read. Fetching...")
 			#endif
+			try fetchAchievements()
 			return
 		}
 		

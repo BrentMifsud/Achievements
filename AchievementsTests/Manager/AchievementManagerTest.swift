@@ -36,7 +36,7 @@ class AchievementManagerTest: XCTestCase {
 	
 	func testSaveAchievements() throws {
 		let achievements = UIImage.personalRecords.enumerated().reduce(into: [String: AchievementViewModel]()) { dict, next in
-			let viewModel = AchievementViewModel(title: "Title \(next.0)", image: next.1, unit: .elevation, measurement: 10)
+			let viewModel = AchievementViewModel(title: "Title \(next.0)", type: .personal, image: next.1, unit: .elevation, measurement: 10)
 			dict[viewModel.id] = viewModel
 		}
 		
@@ -58,7 +58,7 @@ class AchievementManagerTest: XCTestCase {
 	
 	func testSyncAchievements() throws {
 		let achievements = UIImage.personalRecords.enumerated().reduce(into: [String: AchievementViewModel]()) { dict, next in
-			let viewModel = AchievementViewModel(title: "Title \(next.0)", image: next.1, unit: .elevation, measurement: 10)
+			let viewModel = AchievementViewModel(title: "Title \(next.0)", type: .personal, image: next.1, unit: .elevation, measurement: 10)
 			dict[viewModel.id] = viewModel
 		}
 		
@@ -72,7 +72,7 @@ class AchievementManagerTest: XCTestCase {
 	
 	func testClearAchievements() throws {
 		let achievements = UIImage.personalRecords.enumerated().reduce(into: [String: AchievementViewModel]()) { dict, next in
-			let viewModel = AchievementViewModel(title: "Title \(next.0)", image: next.1, unit: .elevation, measurement: 10)
+			let viewModel = AchievementViewModel(title: "Title \(next.0)", type: .personal, image: next.1, unit: .elevation, measurement: 10)
 			dict[viewModel.id] = viewModel
 		}
 		
@@ -88,6 +88,7 @@ class AchievementManagerTest: XCTestCase {
 	func testCompleteAchievement() {
 		let achievement = AchievementViewModel(
 			title: "Achievement 1",
+			type: .personal,
 			image: .fastest5k,
 			unit: .duration,
 			isComplete: false,

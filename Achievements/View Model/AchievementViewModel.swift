@@ -24,7 +24,13 @@ struct AchievementViewModel: Identifiable, Hashable, Codable {
 		}
 	}
 	
+	enum AchievementType: String, Codable {
+		case personal
+		case race
+	}
+	
 	var id: String { title }
+	let type: AchievementType
 	let title: String
 	let image: UIImage
 	var unit: AchievementUnit
@@ -34,6 +40,7 @@ struct AchievementViewModel: Identifiable, Hashable, Codable {
 	
 	init(
 		title: String,
+		type: AchievementType,
 		image: UIImage,
 		unit: AchievementUnit,
 		measurement: Double? = nil,
@@ -41,6 +48,7 @@ struct AchievementViewModel: Identifiable, Hashable, Codable {
 		completedDate: Date? = nil
 	) {
 		self.title = title
+		self.type = type
 		self.image = image
 		self.unit = unit
 		self.measurement = measurement
@@ -63,6 +71,7 @@ struct AchievementViewModel: Identifiable, Hashable, Codable {
 		
 		self.init(
 			title: try container.decode(String.self, forKey: .title),
+			type: try container.decode(AchievementType.self, forKey: .type),
 			image: image,
 			unit: try container.decode(AchievementUnit.self, forKey: .unit),
 			measurement: try container.decodeIfPresent(Double.self, forKey: .measurement),
@@ -85,6 +94,7 @@ struct AchievementViewModel: Identifiable, Hashable, Codable {
 		}
 		
 		try container.encode(title, forKey: .title)
+		try container.encode(type, forKey: .type)
 		try container.encode(imageData, forKey: .image)
 		try container.encode(unit, forKey: .unit)
 		try container.encodeIfPresent(measurement, forKey: .measurement)
@@ -98,6 +108,7 @@ struct AchievementViewModel: Identifiable, Hashable, Codable {
 	
 	private enum CodingKeys: String, CodingKey {
 		case title
+		case type
 		case image
 		case unit
 		case measurement
