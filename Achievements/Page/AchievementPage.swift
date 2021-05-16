@@ -82,7 +82,7 @@ struct AchievementPage: View {
 				LazyVGrid(columns: gridColumns, spacing: 16) {
 					ForEach(
 						achievementManager.isLoading
-							? achievementManager.dummyAchievements
+							? dummyAchievements
 							: achievementManager.personalRecords,
 						id: \.id
 					) { achievement in

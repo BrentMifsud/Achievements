@@ -17,16 +17,6 @@ class AchievementManager: ObservableObject {
 	@Published var isLoading: Bool = false
 	@Published var error: Error? = nil
 	
-	// This is for the purposes of showing a loading animation.
-	var dummyAchievements: [AchievementViewModel] = [
-		AchievementViewModel(title: "Achievement 1", type: .personal, imageName: PersonalRecords.fastest10k.rawValue, unit: .duration),
-		AchievementViewModel(title: "Achievement 2", type: .personal, imageName: PersonalRecords.fastest10k.rawValue, unit: .duration),
-		AchievementViewModel(title: "Achievement 3", type: .personal, imageName: PersonalRecords.fastest10k.rawValue, unit: .duration),
-		AchievementViewModel(title: "Achievement 4", type: .personal, imageName: PersonalRecords.fastest10k.rawValue, unit: .duration),
-		AchievementViewModel(title: "Achievement 5", type: .personal, imageName: PersonalRecords.fastest10k.rawValue, unit: .duration),
-		AchievementViewModel(title: "Achievement 6", type: .personal, imageName: PersonalRecords.fastest10k.rawValue, unit: .duration)
-	]
-	
 	var fileURL: URL {
 		// This should never happen, as the file is included part of the project.
 		guard let url = bundle.url(forResource: "achievements-store", withExtension: "json") else {
