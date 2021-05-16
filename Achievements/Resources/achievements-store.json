@@ -1,0 +1,15 @@
+[
+	{"unit":"duration","isComplete":false,"title":"Longest Run","image":"longest_run","type":"personal"},
+	{"measurement":500,"unit":"elevation","isComplete":true,"completedDate":"2021-05-16T16:50:01Z","title":"Highest Elevation","image":"highest_elevation","type":"personal"},
+	{"unit":"duration","isComplete":false,"title":"Marathon","image":"fastest_marathon","type":"personal"},
+	{"measurement":500,"unit":"duration","isComplete":true,"completedDate":"2021-05-16T16:50:01Z","title":"Half Marathon","image":"fastest_half_marathon","type":"personal"},
+	{"unit":"duration","isComplete":false,"title":"Fastest 10k","image":"fastest_10k","type":"personal"},
+	{"measurement":500,"unit":"duration","isComplete":true,"completedDate":"2021-05-16T16:50:01Z","title":"Fastest 5k","image":"fastest_5k","type":"personal"},
+	{"isComplete":true,"completedDate":"2021-05-16T16:50:01Z","measurement":500,"title":"Hakone Ekiden","type":"race","image":"hakone_ekiden","unit":"duration"},
+	{"isComplete":false,"title":"Mizuno-Singapore Ekiden","type":"race","image":"mizuno_singapore_ekiden","unit":"duration"},
+	{"isComplete":true,"completedDate":"2021-05-16T16:50:01Z","measurement":500,"title":"Tokyo-Hakone Ekiden 2020","type":"race","image":"tokyo-hakone-ekiden-2020","unit":"duration"},
+	{"isComplete":false,"title":"Virtual 5k Race","type":"race","image":"virtual_5k_race","unit":"duration"},
+	{"isComplete":true,"completedDate":"2021-05-16T16:50:01Z","measurement":500,"title":"Virtual 10k Race","type":"race","image":"virtual_10k_race","unit":"duration"},
+	{"isComplete":false,"title":"Virtual Half-Marathon Race","type":"race","image":"virtual_half_marathon_race","unit":"duration"},
+	{"isComplete":false,"title":"Virtual Marathon Race","type":"race","image":"virtual_marathon_race","unit":"duration"}
+]

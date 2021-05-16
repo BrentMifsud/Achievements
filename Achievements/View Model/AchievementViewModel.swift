@@ -32,7 +32,7 @@ struct AchievementViewModel: Identifiable, Hashable, Codable {
 	var id: String { title }
 	let type: AchievementType
 	let title: String
-	let image: UIImage
+	let imageName: String
 	var unit: AchievementUnit
 	var measurement: Double?
 	var isComplete: Bool
@@ -41,7 +41,7 @@ struct AchievementViewModel: Identifiable, Hashable, Codable {
 	init(
 		title: String,
 		type: AchievementType,
-		image: UIImage,
+		imageName: String,
 		unit: AchievementUnit,
 		measurement: Double? = nil,
 		isComplete: Bool = false,
@@ -49,7 +49,7 @@ struct AchievementViewModel: Identifiable, Hashable, Codable {
 	) {
 		self.title = title
 		self.type = type
-		self.image = image
+		self.imageName = imageName
 		self.unit = unit
 		self.measurement = measurement
 		self.isComplete = isComplete
@@ -59,20 +59,10 @@ struct AchievementViewModel: Identifiable, Hashable, Codable {
 	init(from decoder: Decoder) throws {
 		let container = try decoder.container(keyedBy: CodingKeys.self)
 		
-		let imageData = try container.decode(Data.self, forKey: .image)
-		
-		guard let image = UIImage(data: imageData) else {
-			throw DecodingError.dataCorruptedError(
-				forKey: .image,
-				in: container,
-				debugDescription: "Unable to produce image from image data."
-			)
-		}
-		
 		self.init(
 			title: try container.decode(String.self, forKey: .title),
 			type: try container.decode(AchievementType.self, forKey: .type),
-			image: image,
+			imageName: try container.decode(String.self, forKey: .image),
 			unit: try container.decode(AchievementUnit.self, forKey: .unit),
 			measurement: try container.decodeIfPresent(Double.self, forKey: .measurement),
 			isComplete: try container.decode(Bool.self, forKey: .isComplete),
@@ -82,20 +72,10 @@ struct AchievementViewModel: Identifiable, Hashable, Codable {
 	
 	func encode(to encoder: Encoder) throws {
 		var container = encoder.container(keyedBy: CodingKeys.self)
-
-		guard let imageData = image.pngData() else {
-			throw EncodingError.invalidValue(
-				image,
-				EncodingError.Context(
-					codingPath: encoder.codingPath,
-					debugDescription: "Unable to convert image to image data for encoding."
-				)
-			)
-		}
 		
 		try container.encode(title, forKey: .title)
 		try container.encode(type, forKey: .type)
-		try container.encode(imageData, forKey: .image)
+		try container.encode(imageName, forKey: .image)
 		try container.encode(unit, forKey: .unit)
 		try container.encodeIfPresent(measurement, forKey: .measurement)
 		try container.encode(isComplete, forKey: .isComplete)

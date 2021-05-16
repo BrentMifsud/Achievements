@@ -10,128 +10,98 @@ import SwiftUI
 
 class AchievementManager: ObservableObject {
 	private var fileManager = FileManager.default
+	private var bundle = Bundle.main
 	
-	@Published var achievements = [String: AchievementViewModel]()
+	@Published var personalRecords = [AchievementViewModel]()
+	@Published var virtualRaces = [AchievementViewModel]()
+	@Published var isLoading: Bool = false
+	@Published var error: Error? = nil
 	
-	private let fileName: String
-	private let fileExtension = "json"
+	// This is for the purposes of showing a loading animation.
+	var dummyAchievements: [AchievementViewModel] = [
+		AchievementViewModel(title: "Achievement 1", type: .personal, imageName: PersonalRecords.fastest10k.rawValue, unit: .duration),
+		AchievementViewModel(title: "Achievement 2", type: .personal, imageName: PersonalRecords.fastest10k.rawValue, unit: .duration),
+		AchievementViewModel(title: "Achievement 3", type: .personal, imageName: PersonalRecords.fastest10k.rawValue, unit: .duration),
+		AchievementViewModel(title: "Achievement 4", type: .personal, imageName: PersonalRecords.fastest10k.rawValue, unit: .duration),
+		AchievementViewModel(title: "Achievement 5", type: .personal, imageName: PersonalRecords.fastest10k.rawValue, unit: .duration),
+		AchievementViewModel(title: "Achievement 6", type: .personal, imageName: PersonalRecords.fastest10k.rawValue, unit: .duration)
+	]
 	
-	/// Initialize an achievement maneger with file location to save achievements to.
-	/// - Parameter fileName: the file name to persist achievements
-	/// - Note: It is recommended that you use the default here. Changing the filename is meant for testing purposes.
-	init(fileName: String = "Achievements"){
-		self.fileName = fileName
+	var fileURL: URL {
+		// This should never happen, as the file is included part of the project.
+		guard let url = bundle.url(forResource: "achievements-store", withExtension: "json") else {
+			fatalError("Unable find json file!")
+		}
+		
+		return url
 	}
 	
-	private func fetchAchievements() throws {
-		for record in PersonalRecords.allCases {
-			achievements[record.name] = AchievementViewModel(
-				title: record.name,
-				type: .personal,
-				image: UIImage(named: record.rawValue)!,
-				unit: record.unit,
-				isComplete: false
-			)
-		}
-		
-		for race in VirtualRaces.allCases {
-			achievements[race.name] = AchievementViewModel(
-				title: race.name,
-				type: .race,
-				image: UIImage(named: race.rawValue)!,
-				unit: race.unit,
-				isComplete: false
-			)
-		}
-		
-		try saveAchievements()
-	}
-	
-	/// Sync the achievement manager with the achivements saved to the device.
-	/// - Throws: File manager or decoding errors
-	func syncAchievements() throws {
-		let url = try getFileUrl()
-		
-		guard fileManager.fileExists(atPath: url.path) else {
-			#if DEBUG
-			print("AchievementManager -- No achievements file to read. Fetching...")
-			#endif
-			try fetchAchievements()
-			return
-		}
-		
-		let data = try Data(contentsOf: url)
-		let jsonDecoder = JSONDecoder()
-		
-		do {
-			let achievements = try jsonDecoder.decode([AchievementViewModel].self, from: data)
-				.reduce(into: [String: AchievementViewModel](), { dict, next in
-					dict[next.title] = next
-				})
-			self.achievements = achievements
-		} catch {
-			// Normally some sort of data migration would need to occur here.
-			// But for the purposes of this test, we will toss away the achievements file if there are decoding errors.
-			try clearAchievements()
+	var completedCount: Int {
+		personalRecords.reduce(into: 0) { count, next in
+			if next.isComplete {
+				count += 1
+			}
 		}
 	}
 	
-	/// Updates the specified achievement.
-	/// - Parameter achievement: The updated achievement.
-	/// - Throws: Filemanager or encoding errors
-	func updateAchievement(achievement: AchievementViewModel, isComplete: Bool) throws {
-		guard var existing = achievements[achievement.id] else { return }
-		guard existing.isComplete != isComplete else { return }
+	init() {
+		populateAchievements()
+	}
+	
+	// To simulate an api call, I will run this on another thread and make it take 0.5 seconds to complete.
+	private func populateAchievements() {
+		isLoading = true
 		
-		existing.isComplete = isComplete
+		// Since this class should never be deinitialized, it is safe to capture self.
+		let dispatchTime = DispatchTime.now().advanced(by: .milliseconds(10000))
 		
-		if isComplete {
-			existing.completedDate = Date()
-		} else {
-			existing.completedDate = nil
+		DispatchQueue.global(qos: .background).asyncAfter(deadline: dispatchTime) { [self] in
+			let jsonDecoder = JSONDecoder()
+			jsonDecoder.dateDecodingStrategy = .iso8601
+			
+			// This should never happen, as the file is part of the project.
+			guard let data = fileManager.contents(atPath: fileURL.path) else {
+				fatalError("Unable to read json file!")
+			}
+			
+			do {
+				let achievements = try jsonDecoder.decode([AchievementViewModel].self, from: data)
+				
+				// Publish on the main thread as it will impact the UI.
+				DispatchQueue.main.async {
+					self.personalRecords = achievements
+						.filter(by: .personal)
+						.sorted()
+					
+					self.virtualRaces = achievements
+						.filter(by: .race)
+						.sorted()
+					
+					self.isLoading = false
+				}
+			} catch {
+				// Publish on the main thread as it will impact the UI.
+				DispatchQueue.main.async {
+					self.error = error
+					self.isLoading = false
+				}
+			}
 		}
+	}
+	
+}
 
-		try saveAchievements()
-	}
-	
-	/// Persist current achievement manager state
-	/// - Throws: Encoding Errors or FileManager errors
-	func saveAchievements() throws {
-		guard !achievements.isEmpty else {
-			#if DEBUG
-			print("AchievementManager -- No achievements to save.")
-			#endif
-			return
-		}
-		
-		let url = try getFileUrl()
-		let jsonEncoder = JSONEncoder()
-		let arrayToEncode = Array(achievements.values)
-		let data = try jsonEncoder.encode(arrayToEncode)
-		
-		if fileManager.fileExists(atPath: url.path) {
-			try fileManager.removeItem(at: url)
-		}
-		
-		try data.write(to: url, options: .atomic)
-	}
-	
-	/// Delete the achievement file from your device. Resetting all achievements.
-	/// - Throws: FileManager Errors
-	func clearAchievements() throws {
-		self.achievements = [:]
-		
-		let url = try getFileUrl()
-		
-		if fileManager.fileExists(atPath: url.path) {
-			try fileManager.removeItem(at: url)
+extension Collection where Element == AchievementViewModel {
+	func filter(by type: AchievementViewModel.AchievementType) -> [AchievementViewModel] {
+		self.filter { achievement in
+			achievement.type == type
 		}
 	}
 	
-	private func getFileUrl() throws -> URL{
-		try fileManager
-			.url(for: .documentDirectory, in: .userDomainMask, appropriateFor: nil, create: true)
-			.appendingPathComponent(fileName)
-			.appendingPathExtension(fileExtension)
+	func sorted() -> [AchievementViewModel] {
+		self.sorted { lhs, rhs in
+			guard let lhs = lhs.completedDate, let rhs = rhs.completedDate else { return false }
+			return lhs > rhs
+		}
 	}
 }
