@@ -37,6 +37,10 @@ extension Image {
 	static let awardBadge = Image(TabBarIcons.awardBadge.rawValue)
 	static let settings = Image(systemName: TabBarIcons.settings.rawValue)
 	
+	// Static property for nav bar items
+	static let chevronLeft = Image(systemName: NavBarIcons.chevronLeft.rawValue)
+	static let ellipsis = Image(systemName: NavBarIcons.ellipsis.rawValue)
+	
 	static var personalRecords: [Image] {
 		PersonalRecords.allCases.map { personalRecord in
 			Image(personalRecord.rawValue)
@@ -79,6 +83,10 @@ extension UIImage {
 	// Static property for tab bar icons
 	static let awardBadge = UIImage(named: TabBarIcons.awardBadge.rawValue)!
 	static let settings = UIImage(systemName: TabBarIcons.settings.rawValue)!
+	
+	// Static property for nav bar items
+	static let chevronLeft = UIImage(systemName: NavBarIcons.chevronLeft.rawValue)!
+	static let ellipsis = UIImage(systemName: NavBarIcons.ellipsis.rawValue)!
 	
 	static var personalRecords: [UIImage] {
 		PersonalRecords.allCases.compactMap { personalRecord in
@@ -169,6 +177,11 @@ enum VirtualRaces: String, CaseIterable {
 	var unit: AchievementViewModel.AchievementUnit {
 		return .duration
 	}
+}
+
+fileprivate enum NavBarIcons: String, CaseIterable {
+	case chevronLeft = "chevron.left"
+	case ellipsis = "ellipsis"
 }
 
 fileprivate enum TabBarIcons: String, CaseIterable {

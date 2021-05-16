@@ -33,7 +33,9 @@ class AssetCatalogExtensionTest: XCTestCase {
 			UIImage.virtualHalfMarathonRace,
 			UIImage.virtualMarathonRace,
 			UIImage.awardBadge,
-			UIImage.settings
+			UIImage.settings,
+			UIImage.chevronLeft,
+			UIImage.ellipsis
 		]
 		
 		// If the test makes it to this point, its safe to assume none of the force unwraps failed.
