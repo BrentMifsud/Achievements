@@ -53,7 +53,7 @@ class AchievementManager: ObservableObject {
 		isLoading = true
 		
 		// Since this class should never be deinitialized, it is safe to capture self.
-		let dispatchTime = DispatchTime.now().advanced(by: .milliseconds(10000))
+		let dispatchTime = DispatchTime.now().advanced(by: .milliseconds(500))
 		
 		DispatchQueue.global(qos: .background).asyncAfter(deadline: dispatchTime) { [self] in
 			let jsonDecoder = JSONDecoder()
