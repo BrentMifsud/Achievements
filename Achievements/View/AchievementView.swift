@@ -16,23 +16,25 @@ struct AchievementView: View {
 				.resizable()
 				.aspectRatio(contentMode: .fit)
 				.shadow(color: .black.opacity(0.6), radius: 4, x: 0, y: 5)
+				.frame(width: 100)
 			
 			Text(achievement.title)
 				.foregroundColor(.black)
 				.font(.system(size: 12))
 				.fontWeight(.bold)
 				.multilineTextAlignment(.center)
+				.lineLimit(2)
+				.frame(width: 120)
 			
 			if let measurement = achievement.measurement {
 				getText(for: measurement)
 					.font(.system(size: 12))
 					.foregroundColor(.black.opacity(0.8))
-					.multilineTextAlignment(.center)
+					.lineLimit(1)
 			}
 			
 			Spacer()
 		}
-		.frame(width: 100)
 		.opacity(achievement.isComplete ? 1.0 : 0.2)
 	}
 	
