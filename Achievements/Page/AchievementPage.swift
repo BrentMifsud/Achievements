@@ -10,11 +10,15 @@ import SwiftUI
 struct AchievementPage: View {
 	@EnvironmentObject private var achievementManager: AchievementManager
 	
+	private let gridColumns = [
+		GridItem(.flexible()),
+		GridItem(.flexible())
+	]
+	
 	var body: some View {
 		NavigationView {
 			List {
 				personalRecordSection
-				
 				raceSection
 			}
 			.navigationBarTitle(Text(LocalizedStringKey("Achievements"), comment: "Achievements Title"), displayMode: .inline)
@@ -23,18 +27,59 @@ struct AchievementPage: View {
 				Text(LocalizedStringKey("Achievements"), comment: "Achievements Tab")
 			}
 		}
+		.tabItem {
+			VStack {
+				Image.awardBadge
+				Text(
+					LocalizedStringKey("Achievements"),
+					comment: "achievements tab"
+				)
+			}
+		}
 	}
 	
 	private var personalRecordSection: some View {
 		Section(header: recordSectionHeader) {
-			Text("Personal Record Section")
+			if achievementManager.achievements.isEmpty {
+				Rectangle()
+					.fill(Color.white)
+					.frame(height: 250)
+					.overlay(
+						Text(
+							LocalizedStringKey("There are no completed achievements."),
+							comment: "Personal record empty list message."
+						)
+					)
+			} else {
+				LazyVGrid(columns: gridColumns, spacing: 16) {
+					ForEach(Array(achievementManager.achievements.values), id: \.id) { achievement in
+						AchievementView(achievement: achievement)
+					}
+				}
+			}
 		}
 		.textCase(nil)
 	}
 	
 	private var raceSection: some View {
 		Section(header: raceSectionHeader) {
-			Text("Virtual Race Section")
+			if achievementManager.achievements.isEmpty {
+				Rectangle()
+					.fill(Color.white)
+					.frame(height: 250)
+					.overlay(
+						Text(
+							LocalizedStringKey("There are no completed virtual races."),
+							comment: "Virtual races empty list message"
+						)
+					)
+			} else {
+				LazyVGrid(columns: gridColumns, spacing: 16) {
+					ForEach(Array(achievementManager.achievements.values), id: \.id) { achievement in
+						AchievementView(achievement: achievement)
+					}
+				}
+			}
 		}
 		.textCase(nil)
 	}

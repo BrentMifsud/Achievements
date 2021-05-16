@@ -13,19 +13,24 @@ struct AchievementView: View {
 	var body: some View {
 		VStack {
 			Image(uiImage: achievement.image)
+				.resizable()
+				.aspectRatio(contentMode: .fit)
 				.shadow(color: .black.opacity(0.6), radius: 4, x: 0, y: 5)
 			
 			Text(achievement.title)
+				.multilineTextAlignment(.center)
 				.foregroundColor(.black)
 				.font(.system(size: 12))
 			
 			if let measurement = achievement.measurement {
 				getText(for: measurement)
+					.multilineTextAlignment(.center)
 					.font(.system(size: 12))
 					.foregroundColor(.black.opacity(0.8))
 			}
 		}
-		.padding()
+		.frame(width: 100)
+		.opacity(achievement.isComplete ? 1.0 : 0.4)
 	}
 	
 	// If an achievement has not yet been completed, return nil.
