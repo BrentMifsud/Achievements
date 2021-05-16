@@ -12,25 +12,28 @@ struct AchievementView: View {
 	
 	var body: some View {
 		VStack {
-			Image(uiImage: achievement.image)
+			Image(achievement.imageName)
 				.resizable()
 				.aspectRatio(contentMode: .fit)
 				.shadow(color: .black.opacity(0.6), radius: 4, x: 0, y: 5)
 			
 			Text(achievement.title)
-				.multilineTextAlignment(.center)
 				.foregroundColor(.black)
 				.font(.system(size: 12))
+				.fontWeight(.bold)
+				.multilineTextAlignment(.center)
 			
 			if let measurement = achievement.measurement {
 				getText(for: measurement)
-					.multilineTextAlignment(.center)
 					.font(.system(size: 12))
 					.foregroundColor(.black.opacity(0.8))
+					.multilineTextAlignment(.center)
 			}
+			
+			Spacer()
 		}
 		.frame(width: 100)
-		.opacity(achievement.isComplete ? 1.0 : 0.4)
+		.opacity(achievement.isComplete ? 1.0 : 0.2)
 	}
 	
 	// If an achievement has not yet been completed, return nil.
@@ -61,27 +64,29 @@ struct AchievementView_Previews: PreviewProvider {
 				achievement: AchievementViewModel(
 					title: "Test Achievement",
 					type: .personal,
-					image: .fastest5k,
+					imageName: "fastest_5k",
 					unit: .duration,
 					measurement: 123
 				)
 			)
 			.previewLayout(.sizeThatFits)
+			
 			AchievementView(
 				achievement: AchievementViewModel(
 					title: "Test Achievement",
 					type: .personal,
-					image: .fastest5k,
+					imageName: "fastest_5k",
 					unit: .elevation,
 					measurement: 123
 				)
 			)
 			.previewLayout(.sizeThatFits)
+			
 			AchievementView(
 				achievement: AchievementViewModel(
 					title: "Test Achievement",
 					type: .personal,
-					image: .fastest5k,
+					imageName: "fastest_5k",
 					unit: .elevation,
 					measurement: 123
 				)

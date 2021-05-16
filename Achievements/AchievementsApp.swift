@@ -15,20 +15,15 @@ struct AchievementsApp: App {
 		WindowGroup {
 			RootPage()
 				.edgesIgnoringSafeArea(.all)
+				.background(Color.white)
+				.environmentObject(achievementManager)
 				.onAppear {
-					do {
-						try achievementManager.syncAchievements()
-					} catch  {
-						print("Unable to sync achievements")
-					}
-					
 					UINavigationBar.appearance().tintColor = .white
 					UINavigationBar.appearance().barTintColor = .navBarColor
 					UINavigationBar.appearance().backgroundColor = .navBarColor
 					UINavigationBar.appearance().titleTextAttributes = [.foregroundColor: UIColor.white]
 					UINavigationBar.appearance().largeTitleTextAttributes = [.foregroundColor: UIColor.white]
 				}
-				.environmentObject(achievementManager)
 		}
 	}
 }
