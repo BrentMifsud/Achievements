@@ -31,12 +31,12 @@ struct AchievementView: View {
 	// If an achievement has not yet been completed, return nil.
 	private func getText(for measurement: Double) -> Text {
 		let measurementFormatter = MeasurementFormatter()
-		measurementFormatter.locale = Locale.current
 		
 		var measurementString: String
 		
 		if achievement.unit == .elevation {
 			let measurement = Measurement(value: measurement, unit: UnitLength.meters)
+			measurementFormatter.locale = Locale.current
 			measurementFormatter.unitOptions = .naturalScale
 			measurementFormatter.numberFormatter.maximumFractionDigits = 0
 			measurementString = measurementFormatter.string(from: measurement)
@@ -71,6 +71,17 @@ struct AchievementView_Previews: PreviewProvider {
 					measurement: 123
 				)
 			)
+			.previewLayout(.sizeThatFits)
+			AchievementView(
+				achievement: AchievementViewModel(
+					title: "Test Achievement",
+					type: .personal,
+					image: .fastest5k,
+					unit: .elevation,
+					measurement: 123
+				)
+			)
+			.environment(\.locale, Locale(identifier: "en_CA"))
 			.previewLayout(.sizeThatFits)
 		}
 	}
